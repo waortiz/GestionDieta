@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Crear";
+}
+
+<br />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Ingreso de Pacientes</div>
+    <div class="panel-body">
+        <form role="form">
+
+            <table class="table table-striped">
+
+                <tr>
+                    <td>Tipo de documento</td>
+                    <td>
+                        <select class="form-control" id="tipoDocumento">
+                            <option></option>
+                            <option>Cédula de Ciudadanía</option>
+                            <option>Tarjeta de Identidad</option>
+                        </select>
+                    </td>
+                    <td>Número de documento</td>
+                    <td><input type="text" class="form-control" id="numeroDocumento" /></td>
+                </tr>
+                <tr>
+                    <td>Primer nombre</td>
+                    <td><input type="text" class="form-control" id="primerNombre" /></td>
+                    <td>Segundo nombre</td>
+                    <td><input type="text" class="form-control" id="segundoNombre" /></td>
+                </tr>
+                <tr>
+                    <td>Primer apellido</td>
+                    <td><input type="text" class="form-control" id="primerApellido" /></td>
+                    <td>Segundo apellido</td>
+                    <td><input type="text" class="form-control" id="segundoApellido" /></td>
+                </tr>
+                <tr>
+                    <td>Fecha de nacimiento</td>
+                    <td>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" id="fechaNacimiento">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="right">
+                        <input type="submit" value="Registrar" class="btn-primary" />
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+</div>
+<script>
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+
+</script>
+
