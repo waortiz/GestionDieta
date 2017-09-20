@@ -7,7 +7,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Ingreso de Pacientes</div>
     <div class="panel-body">
-        <form role="form">
+        <form role="form" method="post" action="">
 
             <table class="table table-striped">
 
@@ -21,7 +21,7 @@
                         </select>
                     </td>
                     <td>Número de documento</td>
-                    <td><input type="text" class="form-control" id="numeroDocumento" /></td>
+                    <td><input type="number" required maxlength="20" placeholder="Número de documento" class="form-control" id="numeroDocumento" /></td>
                 </tr>
                 <tr>
                     <td>Primer nombre</td>
@@ -38,15 +38,21 @@
                 <tr>
                     <td>Fecha de nacimiento</td>
                     <td>
-                        <div class="input-group date" data-provide="datepicker">
-                            <input type="text" class="form-control" id="fechaNacimiento">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
+                        <div class="input-group date">
+                            <input type="date" class="form-control datepicker" 
+                                   id="fechaNacimiento">
+                            <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-th"></i></span>
                         </div>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>Sexo</td>
+                    <td>
+                        Masculino
+                        <input type="radio" name="sexo" value="M" />&nbsp;
+                        Femenino
+                        <input type="radio" name="sexo" value="F"/>
+
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="4" align="right">
