@@ -38,11 +38,11 @@
                 <tr>
                     <td>Fecha de nacimiento</td>
                     <td>
-                        <div class="input-group date">
-                            <input type="date" class="form-control datepicker" 
-                                   id="fechaNacimiento">
+                        <div class='input-group date' id='dvFechaNacimiento'>
+                            <input type='text' class="form-control" id="fechaNacimiento" />
                             <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-th"></i></span>
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
                     </td>
                     <td>Sexo</td>
@@ -65,8 +65,11 @@
     </div>
 </div>
 <script>
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy'
+    $('#dvFechaNacimiento').datepicker({
+        language: "es",
+        autoclose: true,
+        format: "dd/mm/yyyy",
+        todayHighlight: true
     });
 
 </script>
