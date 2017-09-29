@@ -9,7 +9,8 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Ingreso de Pacientes</div>
     <div class="panel-body">
-        <form role="form" method="post" action="">
+        <div id="alert_placeholder"></div>
+        <form id="paciente" role="form" method="post" action="">
 
             <table class="table table-striped">
 
@@ -23,7 +24,7 @@
                         </select>
                     </td>
                     <td>Número de documento</td>
-                    <td><input type="number" required maxlength="20" placeholder="Número de documento" class="form-control" id="numeroDocumento" /></td>
+                    <td><input type="text" required maxlength="20" placeholder="Número de documento" class="form-control numero" id="numeroDocumento" /></td>
                 </tr>
                 <tr>
                     <td>Primer nombre</td>
@@ -40,7 +41,7 @@
                 <tr>
                     <td>Fecha de nacimiento</td>
                     <td>
-                        <div class='input-group date' id='dvFechaNacimiento'>
+                        <div class='input-group date fecha'>
                             <input type='text' class="form-control" id="fechaNacimiento" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -67,12 +68,31 @@
     </div>
 </div>
 <script>
-    $('#dvFechaNacimiento').datepicker({
+    $('.fecha').datepicker({
         language: "es",
         autoclose: true,
         format: "dd/mm/yyyy",
         todayHighlight: true
     });
+
+    $('.numero').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+
+    $('#paciente').submit(function (evt) {
+        if ($('#numeroDocumento').val().length < 6) {
+            bootstrap_alert.warning('El número de documento debe tener mínimo seis dígitos');
+            return false;
+        }
+    });
+
+    bootstrap_alert = function () { };
+    bootstrap_alert.warning = function (message) {
+        $('#alert_placeholder').
+html('<div class="alert alert-danger">' +
+'<a class="close" data-dismiss="alert">×</a><span>'
++ message + '</span></div>');
+    };
 
 </script>
 
