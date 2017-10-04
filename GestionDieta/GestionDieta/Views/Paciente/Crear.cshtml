@@ -17,14 +17,14 @@
                 <tr>
                     <td>Tipo de documento</td>
                     <td>
-                        <select class="form-control" id="tipoDocumento">
+                        <select class="form-control" id="tipoDocumento" data-validation="required" data-validation-error-msg="Debe seleccionar un tipo de documento">
                             <option></option>
                             <option>Cédula de Ciudadanía</option>
                             <option>Tarjeta de Identidad</option>
                         </select>
                     </td>
                     <td>Número de documento</td>
-                    <td><input type="text" required maxlength="20" placeholder="Número de documento" class="form-control numero" id="numeroDocumento" /></td>
+                    <td><input type="text" maxlength="20" placeholder="Número de documento" class="form-control numero" id="numeroDocumento" /></td>
                 </tr>
                 <tr>
                     <td>Primer nombre</td>
@@ -68,6 +68,17 @@
     </div>
 </div>
 <script>
+    var spanishLanguage = {
+        errorTitle: 'Hay datos incorrectos en el formulario'
+    }
+
+    $.validate({
+        validateOnBlur: false, // disable validation when input looses focus
+        errorMessagePosition: 'top', // Instead of 'inline' which is default
+        scrollToTopOnError: false, // Set this property to true on longer forms
+        language : spanishLanguage
+    });
+
     $('.fecha').datepicker({
         language: "es",
         autoclose: true,
@@ -78,7 +89,7 @@
     $('.numero').keyup(function () {
         this.value = this.value.replace(/[^0-9\.]/g, '');
     });
-
+    
     $('#paciente').submit(function (evt) {
         if ($('#numeroDocumento').val().length < 6) {
             bootstrap_alert.warning('El número de documento debe tener mínimo seis dígitos');
