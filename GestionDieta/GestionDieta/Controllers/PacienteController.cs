@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestionDieta.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -32,17 +33,16 @@ namespace GestionDieta.Controllers
         //
         // POST: /Paciente/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public JsonResult Crear(Paciente paciente)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                var json = Json(new {  mensaje = "" });
+                return json;
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new { mensaje = ex.Message });
             }
         }
 

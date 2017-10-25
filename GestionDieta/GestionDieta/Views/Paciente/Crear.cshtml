@@ -17,32 +17,32 @@
                 <tr>
                     <td>Tipo de documento</td>
                     <td>
-                        <select class="form-control" id="tipoDocumento" data-validation="required" data-validation-error-msg="Debe seleccionar un tipo de documento">
+                        <select class="form-control" id="tipoDocumento" name="tipoDocumento" data-validation="required" data-validation-error-msg="Debe seleccionar un tipo de documento">
                             <option></option>
                             <option>Cédula de Ciudadanía</option>
                             <option>Tarjeta de Identidad</option>
                         </select>
                     </td>
                     <td>Número de documento</td>
-                    <td><input type="text" maxlength="20" placeholder="Número de documento" class="form-control numero" id="numeroDocumento" /></td>
+                    <td><input type="text" maxlength="20" placeholder="Número de documento" class="form-control numero" name="numeroDocumento" id="numeroDocumento" /></td>
                 </tr>
                 <tr>
                     <td>Primer nombre</td>
-                    <td><input type="text" class="form-control" id="primerNombre" /></td>
+                    <td><input type="text" class="form-control" id="primerNombre" name="primerNombre" /></td>
                     <td>Segundo nombre</td>
-                    <td><input type="text" class="form-control" id="segundoNombre" /></td>
+                    <td><input type="text" class="form-control" id="segundoNombre" name="segundoNombre" /></td>
                 </tr>
                 <tr>
                     <td>Primer apellido</td>
-                    <td><input type="text" class="form-control" id="primerApellido" /></td>
+                    <td><input type="text" class="form-control" id="primerApellido" name="primerApellido" /></td>
                     <td>Segundo apellido</td>
-                    <td><input type="text" class="form-control" id="segundoApellido" /></td>
+                    <td><input type="text" class="form-control" id="segundoApellido" name="segundoApellido" /></td>
                 </tr>
                 <tr>
                     <td>Fecha de nacimiento</td>
                     <td>
                         <div class='input-group date fecha'>
-                            <input type='text' class="form-control" id="fechaNacimiento" />
+                            <input type='text' class="form-control" id="fechaNacimiento" name="fechaNacimiento" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -53,7 +53,7 @@
                         Masculino
                         <input type="radio" name="sexo" value="M" />&nbsp;
                         Femenino
-                        <input type="radio" name="sexo" value="F"/>
+                        <input type="radio" name="sexo" value="F" />
 
                     </td>
                 </tr>
@@ -63,7 +63,25 @@
                     </td>
                 </tr>
             </table>
-
+            <div class="modal fade" id="confirmacionAlmacenamientoPaciente" tabindex="-1" role="dialog" aria-labelledby="confirmacionAlmacenamientoPacienteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="alert alert-info">
+                                <strong>
+                                    Registro Paciente
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            El paciente se ha registrado exitosamente
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-success btn-ok" data-dismiss="modal">Aceptar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -76,7 +94,7 @@
         validateOnBlur: false, // disable validation when input looses focus
         errorMessagePosition: 'top', // Instead of 'inline' which is default
         scrollToTopOnError: false, // Set this property to true on longer forms
-        language : spanishLanguage
+        language: spanishLanguage
     });
 
     $('.fecha').datepicker({
@@ -89,21 +107,39 @@
     $('.numero').keyup(function () {
         this.value = this.value.replace(/[^0-9\.]/g, '');
     });
-    
-    $('#paciente').submit(function (evt) {
+
+    $('#paciente').submit(function (event) {
         if ($('#numeroDocumento').val().length < 6) {
             bootstrap_alert.warning('El número de documento debe tener mínimo seis dígitos');
             return false;
         }
+        event.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Crear", "Paciente")',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.mensaje == "") {
+                    $('#confirmacionAlmacenamientoPaciente').modal('show');
+                } else {
+                    bootstrap_alert.warning(response.mensaje);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                bootstrap_alert.warning("Error al almacenar el paciente.");
+            }
+        });
     });
 
     bootstrap_alert = function () { };
     bootstrap_alert.warning = function (message) {
         $('#alert_placeholder').
-html('<div class="alert alert-danger">' +
-'<a class="close" data-dismiss="alert">×</a><span>'
-+ message + '</span></div>');
+            html('<div class="alert alert-danger">' +
+            '<a class="close" data-dismiss="alert">×</a><span>'
+            + message + '</span></div>');
     };
 
 </script>
-
