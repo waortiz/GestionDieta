@@ -45,17 +45,16 @@ header a{
 
 }
 
-ul {
+.menu {
     list-style: none;
     border-bottom: 1px solid #EAEAEA;
     background-color: #FFF;
     padding: 20px;
     margin-top: 0;
     text-align: center;
-    margin-bottom: 75px;
 }
 
-    ul a {
+ .menu a {
         text-decoration: none;
         color: #FFF;
         text-align: left;
@@ -71,17 +70,17 @@ ul {
         transition: 0.2s ease;
     }
 
-ul li a.active{
+.menu li a.active{
     background-color: #F05283;
     pointer-events: none;
 }
 
-ul li a:hover {
+.menu li a:hover {
     opacity: 1;
 }
 
 
-ul li{
+.menu li{
     display: inline-block;
 }
 

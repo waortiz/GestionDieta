@@ -9,35 +9,47 @@ namespace GestionDieta.Controllers
 {
     public class PacienteController : Controller
     {
-        //
-        // GET: /Paciente/
+        public static List<Paciente> pacientes = new List<Paciente>();
+
         public ActionResult Index()
         {
-            return View();
+            return View(pacientes);
         }
 
-        //
-        // GET: /Paciente/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /Paciente/Crear
         public ActionResult Crear()
         {
-            return View();
+            Paciente paciente = new Paciente();
+
+            var tiposDocumento = new List<TipoDocumento>();
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" });
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" });
+
+            ViewBag.TiposDocumento = tiposDocumento.Select(x => new SelectListItem
+            {
+                Text = x.Nombre,
+                Value = x.IdTipoDocumento.ToString()
+            });
+
+            return View(paciente);
         }
 
-        //
-        // POST: /Paciente/Create
         [HttpPost]
-        public JsonResult Crear(Paciente paciente)
+        public JsonResult CrearAJAX(Paciente paciente)
         {
             try
             {
-                var json = Json(new {  mensaje = "" });
+                paciente.IdPaciente = pacientes.Count + 1;
+                if (paciente.TipoDocumento.IdTipoDocumento == 1)
+                {
+                    paciente.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" };
+                }
+                else if (paciente.TipoDocumento.IdTipoDocumento == 2)
+                {
+                    paciente.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" };
+                }
+
+                pacientes.Add(paciente);
+                var json = Json(new { mensaje = "" });
                 return json;
             }
             catch (Exception ex)
@@ -46,21 +58,62 @@ namespace GestionDieta.Controllers
             }
         }
 
-        //
-        // GET: /Paciente/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPost]
+        public ActionResult Crear(Paciente paciente)
         {
-            return View();
+            if (paciente.TipoDocumento.IdTipoDocumento == 1)
+            {
+                paciente.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" };
+            }
+            else if (paciente.TipoDocumento.IdTipoDocumento == 2)
+            {
+                paciente.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" };
+            }
+            if (paciente.IdPaciente == 0)
+            {
+                paciente.IdPaciente = pacientes.Count + 1;
+                pacientes.Add(paciente);
+            }
+            else
+            {
+                ActualizarPaciente(paciente);
+            }
+
+            var tiposDocumento = new List<TipoDocumento>();
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" });
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" });
+
+            ViewBag.TiposDocumento = tiposDocumento.Select(x => new SelectListItem
+            {
+                Text = x.Nombre,
+                Value = x.IdTipoDocumento.ToString()
+            });
+
+            return View(new Paciente());
         }
 
-        //
-        // POST: /Paciente/Edit/5
+        public ActionResult Editar(long id)
+        {
+            var tiposDocumento = new List<TipoDocumento>();
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" });
+            tiposDocumento.Add(new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" });
+            ViewBag.TiposDocumento = tiposDocumento.Select(x => new SelectListItem
+            {
+                Text = x.Nombre,
+                Value = x.IdTipoDocumento.ToString()
+            });
+
+            Paciente paciente = pacientes.FirstOrDefault(p => p.IdPaciente == id);
+
+            return View("Crear", paciente);
+        }
+
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Editar(Paciente paciente)
         {
             try
             {
-                // TODO: Add update logic here
+                ActualizarPaciente(paciente);
 
                 return RedirectToAction("Index");
             }
@@ -69,28 +122,39 @@ namespace GestionDieta.Controllers
                 return View();
             }
         }
-
-        //
-        // GET: /Paciente/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Paciente/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        
+        public ActionResult Eliminar(long id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                Paciente pacienteActual = pacientes.FirstOrDefault(p => p.IdPaciente == id);
+                pacientes.Remove(pacienteActual);
             }
             catch
             {
-                return View();
+            }
+
+            return RedirectToAction("Index");
+        }
+    
+        private static void ActualizarPaciente(Paciente paciente)
+        {
+            Paciente pacienteActual = pacientes.FirstOrDefault(p => p.IdPaciente == paciente.IdPaciente);
+            pacienteActual.FechaNacimiento = paciente.FechaNacimiento;
+            pacienteActual.NumeroDocumento = paciente.NumeroDocumento;
+            pacienteActual.PrimerApellido = paciente.PrimerApellido;
+            pacienteActual.PrimerNombre = paciente.PrimerNombre;
+            pacienteActual.SegundoApellido = paciente.SegundoApellido;
+            pacienteActual.SegundoNombre = paciente.SegundoNombre;
+            pacienteActual.Sexo = paciente.Sexo;
+
+            if (paciente.TipoDocumento.IdTipoDocumento == 1)
+            {
+                pacienteActual.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 1, Nombre = "Cédula de Ciudadanía" };
+            }
+            else if (paciente.TipoDocumento.IdTipoDocumento == 2)
+            {
+                pacienteActual.TipoDocumento = new TipoDocumento() { IdTipoDocumento = 2, Nombre = "Tarjeta de Identidad" };
             }
         }
     }

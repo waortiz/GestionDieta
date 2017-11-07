@@ -1,4 +1,5 @@
-﻿@{
+﻿@model GestionDieta.Models.Paciente
+@{
     ViewBag.Title = "Crear";
 }
 
@@ -10,39 +11,45 @@
     <div class="panel-heading">Ingreso de Pacientes</div>
     <div class="panel-body">
         <div id="alert_placeholder"></div>
-        <form id="paciente" role="form" method="post" action="">
+        <form id="paciente" role="form" method="post" action="/Paciente/Crear">
 
             <table class="table table-striped">
 
                 <tr>
                     <td>Tipo de documento</td>
                     <td>
-                        <select class="form-control" id="tipoDocumento" name="tipoDocumento" data-validation="required" data-validation-error-msg="Debe seleccionar un tipo de documento">
-                            <option></option>
-                            <option>Cédula de Ciudadanía</option>
-                            <option>Tarjeta de Identidad</option>
-                        </select>
+                        @Html.DropDownListFor(p => p.TipoDocumento.IdTipoDocumento, (IEnumerable<SelectListItem>)ViewBag.TiposDocumento, string.Empty, new { @class = "form-control", @data_validation = "required", data_validation_error_msg = "Debe seleccionar un tipo de documento" })
                     </td>
                     <td>Número de documento</td>
-                    <td><input type="text" maxlength="20" placeholder="Número de documento" class="form-control numero" name="numeroDocumento" id="numeroDocumento" /></td>
+                    <td>
+                        @Html.TextBoxFor(p => p.NumeroDocumento, new { @class = "form-control numero", @placeholder = "Número de documento", @maxlength = "20", @data_validation = "required", data_validation_error_msg = "Debe ingresar el número de documento" })
+                    </td>
                 </tr>
                 <tr>
                     <td>Primer nombre</td>
-                    <td><input type="text" class="form-control" id="primerNombre" name="primerNombre" /></td>
+                    <td>
+                        @Html.TextBoxFor(p => p.PrimerNombre, new { @class = "form-control", @placeholder = "Primer Nombre", @maxlength = "100", @data_validation = "required", data_validation_error_msg = "Debe ingresar el primer nombre" })
+                    </td>
                     <td>Segundo nombre</td>
-                    <td><input type="text" class="form-control" id="segundoNombre" name="segundoNombre" /></td>
+                    <td>
+                        @Html.TextBoxFor(p => p.SegundoNombre, new { @class = "form-control", @placeholder = "Segundo Nombre", @maxlength = "100" })
+                    </td>
                 </tr>
                 <tr>
                     <td>Primer apellido</td>
-                    <td><input type="text" class="form-control" id="primerApellido" name="primerApellido" /></td>
+                    <td>
+                        @Html.TextBoxFor(p => p.PrimerApellido, new { @class = "form-control", @placeholder = "Primer Apellido", @maxlength = "100", @data_validation = "required", data_validation_error_msg = "Debe ingresar el primer apellido" })
+                    </td>
                     <td>Segundo apellido</td>
-                    <td><input type="text" class="form-control" id="segundoApellido" name="segundoApellido" /></td>
+                    <td>
+                        @Html.TextBoxFor(p => p.SegundoApellido, new { @class = "form-control", @placeholder = "Segundo Apellido", @maxlength = "100" })
+                    </td>
                 </tr>
                 <tr>
                     <td>Fecha de nacimiento</td>
                     <td>
                         <div class='input-group date fecha'>
-                            <input type='text' class="form-control" id="fechaNacimiento" name="fechaNacimiento" />
+                            @Html.TextBoxFor(p => p.FechaNacimiento, "{0:dd/MM/yyyy}", new { @class = "form-control", @placeholder = "Fecha de Nacimiento", @maxlength = "10", @data_validation = "required", data_validation_error_msg = "Debe ingresar la fecha de nacimiento" })
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -51,19 +58,22 @@
                     <td>Sexo</td>
                     <td>
                         Masculino
-                        <input type="radio" name="sexo" value="M" />&nbsp;
+                        @Html.RadioButtonFor(p => p.Sexo, "M")&nbsp;
                         Femenino
-                        <input type="radio" name="sexo" value="F" />
-
+                        @Html.RadioButtonFor(p => p.Sexo, "F")
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4" align="right">
+                        @Html.HiddenFor(p => p.IdPaciente)
                         <input type="submit" value="Registrar" class="btn-primary" />
                     </td>
                 </tr>
             </table>
-            <div class="modal fade" id="confirmacionAlmacenamientoPaciente" tabindex="-1" role="dialog" aria-labelledby="confirmacionAlmacenamientoPacienteLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmacionAlmacenamientoPaciente"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="confirmacionAlmacenamientoPacienteLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -109,20 +119,33 @@
     });
 
     $('#paciente').submit(function (event) {
-        if ($('#numeroDocumento').val().length < 6) {
+        if ($('#NumeroDocumento').val().length < 6) {
             bootstrap_alert.warning('El número de documento debe tener mínimo seis dígitos');
             return false;
         }
+        if (!$('#Sexo').is(":checked")) {
+            bootstrap_alert.warning('Debe seleccionar el sexo');
+            return false;
+        }
+
         event.preventDefault();
         var formData = new FormData(this);
         $.ajax({
             type: "POST",
-            url: '@Url.Action("Crear", "Paciente")',
+            url: '@Url.Action("CrearAJAX", "Paciente")',
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
                 if (response.mensaje == "") {
+                    $('#NumeroDocumento').val("");
+                    $('#TipoDocumento_IdTipoDocumento').val("");
+                    $('#PrimerNombre').val("");
+                    $('#SegundoNombre').val("");
+                    $('#PrimerApellido').val("");
+                    $('#SegundoApellido').val("");
+                    $('#FechaNacimiento').val("");
+                    $("input[name='Sexo']").prop("checked", false);
                     $('#confirmacionAlmacenamientoPaciente').modal('show');
                 } else {
                     bootstrap_alert.warning(response.mensaje);
