@@ -123,7 +123,7 @@
             bootstrap_alert.warning('El número de documento debe tener mínimo seis dígitos');
             return false;
         }
-        if (!$('#Sexo').is(":checked")) {
+        if (!$('#Sexo:checked').val() != "") {
             bootstrap_alert.warning('Debe seleccionar el sexo');
             return false;
         }
@@ -138,14 +138,16 @@
             contentType: false,
             success: function (response) {
                 if (response.mensaje == "") {
-                    $('#NumeroDocumento').val("");
-                    $('#TipoDocumento_IdTipoDocumento').val("");
-                    $('#PrimerNombre').val("");
-                    $('#SegundoNombre').val("");
-                    $('#PrimerApellido').val("");
-                    $('#SegundoApellido').val("");
-                    $('#FechaNacimiento').val("");
-                    $("input[name='Sexo']").prop("checked", false);
+                    if ($('#IdPaciente').val() == "0") {
+                        $('#NumeroDocumento').val("");
+                        $('#TipoDocumento_IdTipoDocumento').val("");
+                        $('#PrimerNombre').val("");
+                        $('#SegundoNombre').val("");
+                        $('#PrimerApellido').val("");
+                        $('#SegundoApellido').val("");
+                        $('#FechaNacimiento').val("");
+                        $("input[name='Sexo']").prop("checked", false);
+                    }
                     $('#confirmacionAlmacenamientoPaciente').modal('show');
                 } else {
                     bootstrap_alert.warning(response.mensaje);
