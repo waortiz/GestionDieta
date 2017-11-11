@@ -1,0 +1,59 @@
+﻿@model List<GestionDieta.Models.Paciente>
+
+@{
+    ViewBag.Title = "Pacientes";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Tipo de Documento
+        </th>
+        <th>
+            Número Documento
+        </th>
+        <th>
+            Primer Nombre
+        </th>
+        <th>
+            Segundo Nombre
+        </th>
+        <th>
+            Primer Apellido
+        </th>
+        <th>
+            Segundo Apellido
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoDocumento.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroDocumento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrimerNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegundoNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrimerApellido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegundoApellido)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Editar", new {  id=item.IdPaciente }) |
+            @Html.ActionLink("Eliminar", "Eliminar", new {  id=item.IdPaciente })
+        </td>
+    </tr>
+}
+
+</table>
