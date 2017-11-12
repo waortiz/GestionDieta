@@ -163,6 +163,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PacienteController.cs" />
+    <Compile Include="Datos\Paciente.cs" />
+    <Compile Include="Datos\GestionDietaContext.cs" />
+    <Compile Include="Datos\GestionDietaInitializer.cs" />
+    <Compile Include="Datos\TipoDocumento.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
