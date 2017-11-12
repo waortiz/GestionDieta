@@ -50,16 +50,34 @@ namespace GestionDieta.Controllers
         {
             try
             {
-                Datos.Paciente pacienteNuevo = new Datos.Paciente();
-                pacienteNuevo.FechaNacimiento = paciente.FechaNacimiento.Value;
-                pacienteNuevo.IdTipoDocumento = paciente.TipoDocumento.IdTipoDocumento;
-                pacienteNuevo.NumeroDocumento = paciente.NumeroDocumento;
-                pacienteNuevo.PrimerApellido = paciente.PrimerApellido;
-                pacienteNuevo.PrimerNombre = paciente.PrimerNombre;
-                pacienteNuevo.SegundoApellido = paciente.SegundoApellido;
-                pacienteNuevo.SegundoNombre = paciente.SegundoNombre;
-                pacienteNuevo.Sexo = paciente.Sexo;
-                contexto.Pacientes.Add(pacienteNuevo);
+                if (paciente.IdPaciente == 0)
+                {
+                    Datos.Paciente pacienteNuevo = new Datos.Paciente();
+                    pacienteNuevo.FechaNacimiento = paciente.FechaNacimiento.Value;
+                    pacienteNuevo.IdTipoDocumento = paciente.TipoDocumento.IdTipoDocumento;
+                    pacienteNuevo.NumeroDocumento = paciente.NumeroDocumento;
+                    pacienteNuevo.PrimerApellido = paciente.PrimerApellido;
+                    pacienteNuevo.PrimerNombre = paciente.PrimerNombre;
+                    pacienteNuevo.SegundoApellido = paciente.SegundoApellido;
+                    pacienteNuevo.SegundoNombre = paciente.SegundoNombre;
+                    pacienteNuevo.Sexo = paciente.Sexo;
+                    contexto.Pacientes.Add(pacienteNuevo);
+                }
+                else
+                {
+                    Datos.Paciente pacienteActual = contexto.Pacientes.FirstOrDefault(p => p.IdPaciente == paciente.IdPaciente);
+                    if (pacienteActual != null)
+                    {
+                        pacienteActual.FechaNacimiento = paciente.FechaNacimiento.Value;
+                        pacienteActual.IdTipoDocumento = paciente.TipoDocumento.IdTipoDocumento;
+                        pacienteActual.NumeroDocumento = paciente.NumeroDocumento;
+                        pacienteActual.PrimerApellido = paciente.PrimerApellido;
+                        pacienteActual.PrimerNombre = paciente.PrimerNombre;
+                        pacienteActual.SegundoApellido = paciente.SegundoApellido;
+                        pacienteActual.SegundoNombre = paciente.SegundoNombre;
+                        pacienteActual.Sexo = paciente.Sexo;
+                    }
+                }
                 contexto.SaveChanges();
 
                 var json = Json(new { mensaje = "" });
@@ -144,6 +162,7 @@ namespace GestionDieta.Controllers
             Paciente paciente = new Paciente();
             if (pacienteActual != null)
             {
+                paciente.IdPaciente = pacienteActual.IdPaciente;
                 paciente.FechaNacimiento = pacienteActual.FechaNacimiento;
                 paciente.TipoDocumento = new TipoDocumento() { IdTipoDocumento = pacienteActual.IdTipoDocumento };
                 paciente.NumeroDocumento = pacienteActual.NumeroDocumento;
@@ -163,6 +182,7 @@ namespace GestionDieta.Controllers
             {
                 var pacienteActual = contexto.Pacientes.FirstOrDefault(p => p.IdPaciente == id);
                 contexto.Pacientes.Remove(pacienteActual);
+                contexto.SaveChanges();
             }
             catch
             {
