@@ -1,4 +1,5 @@
 ﻿using GestionDieta.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,28 @@ namespace GestionDieta.Controllers
             }).ToList();
 
             return View(pacientes);
+        }
+
+        public ActionResult Grafico()
+        {
+            var pacientes = contexto.Pacientes.GroupBy(p => p.FechaNacimiento.Year).Select(p=> new { Year = p.Key, Cantidad = p.Count() } );
+            var datosGrafico = "[";
+            if (pacientes.Count() > 0)
+            {
+                foreach (var valor in pacientes)
+                {
+                    datosGrafico += "['" + valor.Year + "', " + valor.Cantidad + "],";
+                }
+                datosGrafico = datosGrafico.Substring(0, datosGrafico.Length - 1);
+                datosGrafico += "]";
+            }
+            else
+            {
+                datosGrafico = "[]";
+            }
+
+            ViewBag.DatosGrafico = datosGrafico;
+            return View();
         }
 
         public ActionResult Crear()

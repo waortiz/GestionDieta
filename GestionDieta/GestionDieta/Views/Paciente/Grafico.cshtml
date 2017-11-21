@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Gráfico de Pacientes por Edad";
+}
+
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart"></i>
+                Pacientes por Año de Nacimiento
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div id="pieChart" style="display: table; margin: 0 auto;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Año');
+        data.addColumn('number', 'Cantidad');
+        data.addRows(@(new HtmlString(ViewBag.DatosGrafico)));
+        var options = { is3D: true, 'width': 600, 'height': 250 };
+        var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+        chart.draw(data, options);
+    }
+</script>
