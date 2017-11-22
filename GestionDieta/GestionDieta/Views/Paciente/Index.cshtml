@@ -4,7 +4,7 @@
     ViewBag.Title = "Pacientes";
 }
 
-<table class="table" id="pacientes" name="paciente">
+<table class="table" id="pacientes" name="pacientes">
     <thead>
         <tr>
             <th>
@@ -64,8 +64,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var pacientes = $('#pacientes').DataTable({
-            "dom": 'Bfrtip',
-            "buttons": [
+            dom: 'Bfrtip',
+            buttons: [
                 {
                     extend: 'excel',
                     text: 'Excel'
@@ -79,9 +79,7 @@
                     text: 'PDF'
                 }
             ],
-            scrollX: true,
-            scrollCollapse: true,
-            "language": {
+            language: {
                 "decimal": ".",
                 "thousands": ",",
                 "processing": "<span><b>Buscando registros</b></span>",
