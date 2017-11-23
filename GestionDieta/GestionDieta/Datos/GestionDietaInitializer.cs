@@ -15,6 +15,8 @@ namespace GestionDieta.Datos
             context.TiposDocumento.Add(new TipoDocumento() { Nombre = "Cédula de Extranjería", IdTipoDocumento = 2 });
             context.TiposDocumento.Add(new TipoDocumento() { Nombre = "Tarjeta de Identidad", IdTipoDocumento = 3 });
 
+            context.Usuarios.Add(new Usuario() { Nombre = "william", Clave = "123" });
+
             base.Seed(context);
         }
     }

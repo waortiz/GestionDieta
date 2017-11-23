@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace GestionDieta.Controllers
 {
+    [Authorize]
     public class PacienteController : Controller
     {
         private static Datos.GestionDietaContext contexto = new Datos.GestionDietaContext();

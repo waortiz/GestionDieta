@@ -16,6 +16,7 @@ namespace GestionDieta.Datos
 
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<TipoDocumento> TiposDocumento { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

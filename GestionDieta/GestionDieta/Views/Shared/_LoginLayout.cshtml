@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Dieta</title>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/Content/estilos.css" />
+    <link rel="stylesheet" href="~/Content/assets/form-basic.css" />
+    <link rel="stylesheet" href="~/Content/assets/demo.css" />
+    <script type="text/javascript" src="~/Scripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Dieta</h1>
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
