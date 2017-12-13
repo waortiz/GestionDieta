@@ -17,6 +17,6 @@ namespace GestionDieta.Datos
         public int IdTipoDocumento { get; set; }
         public string Nombre { get; set; }
 
-        public virtual ICollection<Paciente> Pacientes { get; set; }
+        public ICollection<Paciente> Pacientes { get; set; }
     }
 }

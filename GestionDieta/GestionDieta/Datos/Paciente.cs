@@ -19,6 +19,6 @@ namespace GestionDieta.Datos
         public string Sexo { get; set; }
         public int IdTipoDocumento { get; internal set; }
 
-        public virtual TipoDocumento TipoDocumento { get; set; }
+        public TipoDocumento TipoDocumento { get; set; }
     }
 }
